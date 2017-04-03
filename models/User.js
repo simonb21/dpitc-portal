@@ -9,8 +9,11 @@ var User = new keystone.List('User');
 
 User.add({
 	name: { type: Types.Name, required: true, index: true },
-	email: { type: Types.Email, initial: true, required: true, index: true },
+	email: { type: Types.Email, initial: true, required: true, index: true, unique: true },
 	password: { type: Types.Password, initial: true, required: true },
+	location: { type: Types.Location, defaults: { country: 'Philippines' }},
+	birthday: { type: Types.Date, initial: true, required: true, index: true },
+	sex: { type: Types.Select, initial: true, options: 'Male, Female', required: true },
 }, 'Permissions', {
 	isAdmin: { type: Boolean, label: 'Can access Keystone', index: true },
 });
@@ -25,6 +28,8 @@ User.schema.virtual('canAccessKeystone').get(function () {
  * Relationships
  */
 User.relationship({ ref: 'Post', path: 'posts', refPath: 'author' });
+User.relationship({ ref: 'BlogPost', path: 'blogPosts', refPath: 'author' });
+User.relationship({ ref: 'Comment', path: 'comments', refPath: 'author' });
 
 
 /**
